@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: "ec2-recipeapp"
+    runs-on: ["self-hosted"]
     env:
       DB_URL: ${{ secrets.DATABASE_URL }}
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
