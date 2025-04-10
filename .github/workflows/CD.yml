@@ -1,1 +1,36 @@
+name: recipe application CD
 
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  deploy:
+    needs: build
+    runs-on: "ec2-recipeapp"
+    env:
+      DB_URL: ${{ secrets.DATABASE_URL }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      AGENT_BASE_URL: ${{ secrets.AGENT_BASE_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_EXP: ${{ secrets.JWT_EXP }}
+      REDIS_HOST: ${{ secrets.REDIS_HOST }}
+      REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+      REDIS_PORT: ${{ secrets.REDIS_PORT }}
+    steps:
+      - name: Check Docker Installation
+        run: |
+          if ! [ -x "$(command -v docker)" ]; then
+            echo "Error: Docker is not installed." >&2
+            exit 1
+          fi
+      - name: Pull image from docker hub
+        run: sudo docker pull ${{vars.DOCKER_URL}}:latest
+      - name: Delete existing container
+        run: |
+          if [ "$(sudo docker ps -aq -f name=demo)" ]; then
+            sudo docker rm -f demo
+          fi
+      - name: Run docker container
+        run: sudo docker run -d -p 8080:8080 --name recipeApp ${{vars.DOCKER_URL}}
