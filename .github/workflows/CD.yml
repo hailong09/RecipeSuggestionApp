@@ -29,6 +29,9 @@ jobs:
           fi
       - name: Pull image from docker hub
         run: sudo docker pull ${{vars.DOCKER_URL}}:latest
+      - name: Check EC2 uptime
+        run: uptime
+
       - name: Delete existing container
         run: |
           if [ "$(sudo docker ps -aq -f name=demo)" ]; then
