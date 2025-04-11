@@ -33,3 +33,5 @@ build/
 .vscode/
 
 .env
+./src/main/java/com/RecipeSuggestion/config/DotEnvConfig.java
+
