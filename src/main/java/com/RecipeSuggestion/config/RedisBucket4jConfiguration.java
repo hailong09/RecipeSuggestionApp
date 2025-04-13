@@ -11,6 +11,8 @@ import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,16 +22,19 @@ import java.util.function.Supplier;
 
 @Configuration
 public class RedisBucket4jConfiguration {
-    @Value("${REDIS_HOST}")
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
+
+    @Value("${app.redis.host}")
     public String redisHost;
 
-    @Value("${REDIS_PASSWORD}")
+    @Value("${app.redis.password}")
     public String redisPassword;
 
-    @Value("${REDIS_PORT}")
+    @Value("${app.redis.port}")
     public String redisPort;
 
     private RedisClient redisClient() {
+        LOG.debug("redis://default:{}@{}:{}", redisPassword, redisHost, redisPort);
         return RedisClient.create("redis://default:"+ redisPassword +"@"+ redisHost +":" + redisPort);
     }
 
