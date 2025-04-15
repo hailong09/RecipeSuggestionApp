@@ -37,17 +37,9 @@ jobs:
           if [ "$(sudo docker ps -aq -f name=demo)" ]; then
             sudo docker rm -f demo
           fi
-      - name: create Ipv6 network
-        run: |
-          docker network ls | grep spring-boot-ipv6-net || \
-                    docker network create \
-                      --ipv6 \
-                      --subnet=2001:db8:1::/64 \
-                      spring-boot-ipv6-net
-
       - name: Run docker container
         run: |
-          sudo docker run -d -p 8080:8080 --name recipeApp --network spring-boot-ipv6-net \
+          sudo docker run -d -p 8080:8080 --name recipeApp --network my-ipv6-net \
           -e DB_URL="${{ secrets.DB_URL }}" \
           -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
           -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
