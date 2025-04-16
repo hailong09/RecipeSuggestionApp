@@ -27,26 +27,26 @@ jobs:
             echo "Error: Docker is not installed." >&2
             exit 1
           fi
+      - name: Remove existing docker images
+        run: docker rmi $(docker images -q)
       - name: Pull image from docker hub
-        run: sudo docker pull ${{vars.DOCKER_URL}}:latest
-      - name: Check EC2 uptime
-        run: uptime
+        run: docker pull ${{vars.DOCKER_URL}}:latest
 
       - name: Delete existing container
         run: |
-          if [ "$(sudo docker ps -aq -f name=demo)" ]; then
-            sudo docker rm -f demo
+          if [ "$(docker ps -aq -f name=recipeApp)" ]; then
+            docker rm -f recipeApp
           fi
       - name: Run docker container
         run: |
-          sudo docker run -d -p 8080:8080 --name recipeApp --network my-ipv6-net \
-          -e DB_URL="${{ secrets.DB_URL }}" \
-          -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
-          -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
-          -e AGENT_BASE_URL="${{ secrets.AGENT_BASE_URL }}" \
-          -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-          -e JWT_EXP="${{ secrets.JWT_EXP }}" \
-          -e REDIS_HOST="${{ secrets.REDIS_HOST }}" \
-          -e REDIS_PASSWORD="${{ secrets.REDIS_PASSWORD }}" \
-          -e REDIS_PORT="${{ secrets.REDIS_PORT }}" \
-          ${{ vars.DOCKER_URL }}:latest
+          docker run -d -p 8080:8080 --name recipeApp --network my-ipv6-net \
+            -e DB_URL="${{ secrets.DB_URL }}" \
+            -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+            -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            -e AGENT_BASE_URL="${{ secrets.AGENT_BASE_URL }}" \
+            -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+            -e JWT_EXP="${{ secrets.JWT_EXP }}" \
+            -e REDIS_HOST="${{ secrets.REDIS_HOST }}" \
+            -e REDIS_PASSWORD="${{ secrets.REDIS_PASSWORD }}" \
+            -e REDIS_PORT="${{ secrets.REDIS_PORT }}" \
+            ${{ vars.DOCKER_URL }}:latest
