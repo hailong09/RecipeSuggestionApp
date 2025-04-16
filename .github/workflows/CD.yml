@@ -29,14 +29,16 @@ jobs:
           fi
       - name: Remove existing docker images
         run: docker rmi $(docker images -q)
-      - name: Pull image from docker hub
-        run: docker pull ${{vars.DOCKER_URL}}:latest
 
       - name: Delete existing container
         run: |
           if [ "$(docker ps -aq -f name=recipeApp)" ]; then
             docker rm -f recipeApp
           fi
+
+      - name: Pull image from docker hub
+        run: docker pull ${{vars.DOCKER_URL}}:latest
+
       - name: Run docker container
         run: |
           docker run -d -p 8080:8080 --name recipeApp --network my-ipv6-net \
