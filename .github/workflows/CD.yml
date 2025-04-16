@@ -27,14 +27,14 @@ jobs:
             echo "Error: Docker is not installed." >&2
             exit 1
           fi
-      - name: Remove existing docker images
-        run: docker rmi $(docker images -q)
-
       - name: Delete existing container
         run: |
           if [ "$(docker ps -aq -f name=recipeApp)" ]; then
             docker rm -f recipeApp
           fi
+
+      - name: Remove existing docker images
+        run: docker rmi $(docker images -q)
 
       - name: Pull image from docker hub
         run: docker pull ${{vars.DOCKER_URL}}:latest
