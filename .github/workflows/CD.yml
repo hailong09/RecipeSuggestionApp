@@ -11,7 +11,7 @@ jobs:
   deploy:
     runs-on: ["self-hosted"]
     env:
-      DB_URL: ${{ vars.DB)URL }}
+      DB_URL: ${{ vars.DB_URL }}
       DB_USERNAME: ${{ vars.DB_USERNAME }}
       DB_PASSWORD: ${{ vars.DB_PASSWORD }}
       AGENT_BASE_URL: ${{ secrets.AGENT_BASE_URL }}
