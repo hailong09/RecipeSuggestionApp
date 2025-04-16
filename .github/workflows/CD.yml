@@ -11,9 +11,9 @@ jobs:
   deploy:
     runs-on: ["self-hosted"]
     env:
-      DB_URL: ${{ secrets.DATABASE_URL }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_URL: ${{ vars.DB)URL }}
+      DB_USERNAME: ${{ vars.DB_USERNAME }}
+      DB_PASSWORD: ${{ vars.DB_PASSWORD }}
       AGENT_BASE_URL: ${{ secrets.AGENT_BASE_URL }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       JWT_EXP: ${{ secrets.JWT_EXP }}
@@ -41,11 +41,11 @@ jobs:
 
       - name: Run docker container
         run: |
-          echo "${{ secrets.DB_URL }}"
+          echo "${{ vars.DB_URL }}"
           docker run -d -p 8080:8080 --name recipeApp --network my-ipv6-net \
-            -e DB_URL="${{ secrets.DB_URL }}" \
-            -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
-            -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            -e DB_URL="${{ vars.DB_URL }}" \
+            -e DB_USERNAME="${{ vars.DB_USERNAME }}" \
+            -e DB_PASSWORD="${{ vars.DB_PASSWORD }}" \
             -e AGENT_BASE_URL="${{ secrets.AGENT_BASE_URL }}" \
             -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
             -e JWT_EXP="${{ secrets.JWT_EXP }}" \
