@@ -41,6 +41,7 @@ jobs:
 
       - name: Run docker container
         run: |
+          echo "${{ secrets.DB_URL }}"
           docker run -d -p 8080:8080 --name recipeApp --network my-ipv6-net \
             -e DB_URL="${{ secrets.DB_URL }}" \
             -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
